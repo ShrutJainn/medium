@@ -3,6 +3,7 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import bcrypt from "bcryptjs";
 
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { sign, verify } from "hono/jwt";
 import { userRouter } from "../routes/user";
 import { blogRouter } from "../routes/blog";
@@ -18,6 +19,8 @@ const app = new Hono<{
   Bindings: Bindings;
   Variables: Variables;
 }>();
+
+app.use("/*", cors());
 
 app.use("/api/v1/blogs/*", async (c, next) => {
   const authHeader = c.req.header("Authorization");
